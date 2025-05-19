@@ -1,31 +1,33 @@
-import { createContainer, asClass } from "awilix";
-import path from "path";
-import lodash from "lodash";
+import { DictionaryRepositoryInterface } from '@/domain/repositories/dictionary-repository.interface'
+import { HttpServiceInterface } from '@/domain/services/http-servivce.interface'
+import { UUIDServiceInterface } from '@/domain/services/uuid.service.interface'
+import { createContainer, asClass } from 'awilix'
+import path from 'path'
+import lodash from 'lodash'
 
-export type AppContainer = {};
+export type AppContainer = {
+  dictionaryRepository: DictionaryRepositoryInterface
+  httpService: HttpServiceInterface
+  uuidService: UUIDServiceInterface
+}
 
-const container = createContainer();
+const container = createContainer()
 
-const distDir = path.join(__dirname, "../../");
+const distDir = path.join(__dirname, '../../')
 
 container.loadModules(
-  [
-    path.join(distDir, "controllers/**/*.js"),
-    path.join(distDir, "usecases/**/**/*.js"),
-    path.join(distDir, "infra/database/repositories/*.js"),
-    path.join(distDir, "shared/services/**/*.js"),
-  ],
+  [path.join(distDir, 'controllers/**/*.js'), path.join(distDir, 'usecases/**/**/*.js'), path.join(distDir, 'infra/database/repositories/*.js'), path.join(distDir, 'shared/services/**/*.js')],
   {
     formatName: (name: string) => {
-      name = lodash.camelCase(name);
+      name = lodash.camelCase(name)
 
-      return name;
+      return name
     },
     resolverOptions: {
-      lifetime: "SINGLETON",
+      lifetime: 'SINGLETON',
       register: asClass,
     },
-  },
-);
+  }
+)
 
-export { container };
+export { container }

@@ -1,4 +1,4 @@
-import { ControllerInterface, HttpRequest } from '@/interfaces/controller/controller.interface'
+import { ControllerInterface, HttpRequest } from '@/domain/controller/controller.interface'
 import { obfuscateValue } from '@/shared/helpers/string.helper'
 import { prismaClient } from '../database/prisma-client'
 import { randomUUID } from 'crypto'

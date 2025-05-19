@@ -1,4 +1,4 @@
-import { HttpResponse } from '@/interfaces/controller/controller.interface'
+import { HttpResponse } from '@/domain/controller/controller.interface'
 import LoggerService from '../services/logger.service'
 
 const loggerService = new LoggerService()
