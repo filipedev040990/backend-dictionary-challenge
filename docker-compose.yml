@@ -1,0 +1,17 @@
+services:
+  projeto_base_2025:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: 'projeto_base_2025'
+    restart: always
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    volumes:
+      - ./:/app
+    command: bash -c "npm install --legacy-peer-deps && npm run build && npx prisma generate && npx prisma migrate deploy && npm start"
+networks:
+  default:
+    name: local
