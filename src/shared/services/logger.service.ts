@@ -1,8 +1,6 @@
-import { LogLevel, LoggerServiceInterface } from '@/interfaces/services/logger.service.interface'
+import { LogLevel, LoggerServiceInterface } from '@/domain/services/logger.service.interface'
 import pino, { Logger as PinoLogger } from 'pino'
 import { getNamespace } from 'cls-hooked'
-import * as fs from 'fs'
-import * as path from 'path'
 
 type LogData = {
   level: LogLevel
@@ -14,13 +12,6 @@ export default class LoggerService implements LoggerServiceInterface {
   private readonly logger: PinoLogger
 
   constructor() {
-    const logDirectory = path.resolve(__dirname, '../../../app-logs')
-    if (!fs.existsSync(logDirectory)) {
-      fs.mkdirSync(logDirectory, { recursive: true })
-    }
-
-    const logFilePath = path.join(logDirectory, 'employee-ms.log')
-
     const streams = [
       {
         stream: pino.transport({
@@ -32,15 +23,12 @@ export default class LoggerService implements LoggerServiceInterface {
           },
         }),
       },
-      {
-        stream: fs.createWriteStream(logFilePath, { flags: 'a' }),
-      },
     ]
 
     this.logger = pino(
       {
         level: 'info',
-        name: 'employee-ms',
+        name: 'backend-dictionary',
         base: {},
       },
       pino.multistream(streams)
