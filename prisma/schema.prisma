@@ -26,3 +26,11 @@ model Request {
 
   @@map("requests")
 }
+
+model Dictionary {
+  id        String   @id
+  word      String
+  createdAt DateTime
+
+  @@map("dictionary")
+}
