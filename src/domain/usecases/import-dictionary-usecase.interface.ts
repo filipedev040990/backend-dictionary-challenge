@@ -1,3 +1,3 @@
 export interface ImportDictionaryUsecaseInterface {
-  execute: () => Promise<void>
+  execute: () => Promise<{ status: string }>
 }

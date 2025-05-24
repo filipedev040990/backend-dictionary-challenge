@@ -22,7 +22,7 @@ export const expressRouteAdapter = (controller: ControllerInterface) => {
     loggerService.info('Started request', {
       method: req.method,
       route: req.url,
-      input: bodyLog ? JSON.stringify(bodyLog) : null,
+      input: bodyLog ? JSON.stringify(bodyLog) : '',
     })
 
     const { statusCode, body } = await controller.execute(input)
@@ -45,7 +45,7 @@ const logRequest = async (req: Request, input: any, statusCode: number, output: 
       id: randomUUID(),
       method: req.method,
       requestId: getRequestId(),
-      input: JSON.stringify(input.body),
+      input: input.body ? JSON.stringify(input.body) : '',
       route: req.url,
       createdAt: new Date(),
       status: statusCode,

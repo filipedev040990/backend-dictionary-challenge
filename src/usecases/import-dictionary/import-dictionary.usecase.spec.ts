@@ -59,6 +59,8 @@ describe('ImportDictionaryUsecase', () => {
   beforeEach(() => {
     sut = new ImportDictionaryUsecase(params)
     jest.spyOn(params.httpService, 'get').mockResolvedValue(fakeHttpResponse)
+    jest.spyOn(params.uuidService, 'generate').mockReturnValue('anyId')
+    jest.spyOn(params.dictionaryImportsRepository, 'get').mockResolvedValue(null)
   })
 
   test('should call HttpService.get once and with correct params', async () => {
@@ -67,9 +69,21 @@ describe('ImportDictionaryUsecase', () => {
     expect(params.httpService.get).toHaveBeenCalledWith('https://raw.githubusercontent.com/dwyl/english-words/refs/heads/master/words_dictionary.json')
   })
 
+  test('should return if HttpService.get returns null', async () => {
+    params.httpService.get.mockResolvedValueOnce(null)
+    const output = await sut.execute()
+    expect(output).toEqual({ status: 'dictionary_not_found' })
+  })
+
   test('should call DictionaryImportsRepository.get', async () => {
     await sut.execute()
     expect(params.dictionaryImportsRepository.get).toHaveBeenCalledTimes(1)
+  })
+
+  test('should return if DictionaryImportsRepository.get returns a record', async () => {
+    params.dictionaryImportsRepository.get.mockResolvedValueOnce({ id: 'anyId', status: 'processing', createdAt: new Date() })
+    const output = await sut.execute()
+    expect(output).toEqual({ status: 'already_processed' })
   })
 
   test('should call DictionaryImportsRepository.generateFile', async () => {
@@ -82,5 +96,21 @@ describe('ImportDictionaryUsecase', () => {
     await sut.execute()
     expect(params.pubSubService.publish).toHaveBeenCalledTimes(1)
     expect(params.pubSubService.publish).toHaveBeenCalledWith('dictionary_downloaded', 'backend-dicionary.json')
+  })
+
+  test('should call DictionaryImportsRepository.save', async () => {
+    await sut.execute()
+    expect(params.dictionaryImportsRepository.save).toHaveBeenCalledTimes(1)
+    expect(params.dictionaryImportsRepository.save).toHaveBeenCalledWith({
+      id: 'anyId',
+      status: 'processing',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
+  })
+
+  test('should return a correct output', async () => {
+    const output = await sut.execute()
+    expect(output).toEqual({ status: 'processing' })
   })
 })

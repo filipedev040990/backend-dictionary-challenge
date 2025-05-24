@@ -18,7 +18,7 @@ export default class DictionaryImportsRepository implements DictionaryImportsRep
   }
 
   async generateFile(fileName: string, content: Object): Promise<void> {
-    const filePath = join(__dirname, '..', fileName)
+    const filePath = join(__dirname, '../../../../', fileName)
     await writeFile(filePath, JSON.stringify(content, null, 2), 'utf-8')
   }
 }

@@ -16,8 +16,8 @@ export default class ImportDictionaryController implements ControllerInterface {
 
   async execute(): Promise<HttpResponse> {
     try {
-      await this.importDictionaryUsecase.execute()
-      return success(200, null)
+      const output = await this.importDictionaryUsecase.execute()
+      return success(200, output)
     } catch (error) {
       const formattedError = handleError(error)
       this.loggerService.error('Importing dictionary error', { error: formattedError })

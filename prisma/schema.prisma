@@ -41,5 +41,5 @@ model DictionaryImports {
   createdAt DateTime
   updatedAt DateTime
 
-  @@map("dicrionary_imports")
+  @@map("dictionary_imports")
 }

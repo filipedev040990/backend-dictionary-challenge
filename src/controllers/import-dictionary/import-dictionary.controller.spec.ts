@@ -8,11 +8,14 @@ const params: any = {
   importDictionaryUsecase: mock<ImportDictionaryUsecaseInterface>(),
 }
 
+const usecaseOutput = { status: 'processing' }
+
 describe('ImportDictionaryController', () => {
   let sut: ImportDictionaryController
 
   beforeEach(() => {
     sut = new ImportDictionaryController(params)
+    jest.spyOn(params.importDictionaryUsecase, 'execute').mockResolvedValue(usecaseOutput)
   })
 
   test('should call ImportDictionaryUsecase.execute', async () => {
@@ -22,6 +25,6 @@ describe('ImportDictionaryController', () => {
 
   test('should return a correct output', async () => {
     const output = await sut.execute()
-    expect(output).toEqual({ statusCode: 200, body: null })
+    expect(output).toEqual({ statusCode: 200, body: usecaseOutput })
   })
 })
