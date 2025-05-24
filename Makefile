@@ -19,4 +19,7 @@ clean:
 run:
 	docker-compose exec $(SERVICE) npm start
 
+login:
+	docker exec -it $(SERVICE) bash
+
 restart: down up

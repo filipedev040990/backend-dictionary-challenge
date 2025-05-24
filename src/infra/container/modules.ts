@@ -3,6 +3,8 @@ import { HttpServiceInterface } from '@/domain/services/http-servivce.interface'
 import { UUIDServiceInterface } from '@/domain/services/uuid.service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger.service.interface'
 import { ImportDictionaryUsecaseInterface } from '@/domain/usecases/import-dictionary-usecase.interface'
+import { DictionaryImportsRepositoryInterface } from '@/domain/repositories/dictionary-imports-repository.interface'
+import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { createContainer, asClass } from 'awilix'
 import path from 'path'
 import lodash from 'lodash'
@@ -13,6 +15,8 @@ export type AppContainer = {
   uuidService: UUIDServiceInterface
   loggerService: LoggerServiceInterface
   importDictionaryUsecase: ImportDictionaryUsecaseInterface
+  dictionaryImportsRepository: DictionaryImportsRepositoryInterface
+  pubSubService: PubSubServiceInterface
 }
 
 const container = createContainer()

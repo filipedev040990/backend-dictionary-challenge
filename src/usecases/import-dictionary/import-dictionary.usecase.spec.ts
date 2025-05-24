@@ -1,13 +1,17 @@
-import { DictionaryRepositoryInterface } from '@/domain/repositories/dictionary-repository.interface'
 import ImportDictionaryUsecase from './import-dictionary.usecase'
 import { HttpServiceInterface } from '@/domain/services/http-servivce.interface'
 import { UUIDServiceInterface } from '@/domain/services/uuid.service.interface'
+import { LoggerServiceInterface } from '@/domain/services/logger.service.interface'
+import { DictionaryImportsRepositoryInterface } from '@/domain/repositories/dictionary-imports-repository.interface'
+import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { mock } from 'jest-mock-extended'
 
 const params: any = {
-  dictionaryRepository: mock<DictionaryRepositoryInterface>(),
   httpService: mock<HttpServiceInterface>(),
   uuidService: mock<UUIDServiceInterface>(),
+  loggerService: mock<LoggerServiceInterface>(),
+  dictionaryImportsRepository: mock<DictionaryImportsRepositoryInterface>(),
+  pubSubService: mock<PubSubServiceInterface>(),
 }
 
 const fakeHttpResponse = {
@@ -63,8 +67,20 @@ describe('ImportDictionaryUsecase', () => {
     expect(params.httpService.get).toHaveBeenCalledWith('https://raw.githubusercontent.com/dwyl/english-words/refs/heads/master/words_dictionary.json')
   })
 
-  test('should call DictionaryRepository.save with correct values', async () => {
+  test('should call DictionaryImportsRepository.get', async () => {
     await sut.execute()
-    expect(params.dictionaryRepository.save).toHaveBeenCalledTimes(36)
+    expect(params.dictionaryImportsRepository.get).toHaveBeenCalledTimes(1)
+  })
+
+  test('should call DictionaryImportsRepository.generateFile', async () => {
+    await sut.execute()
+    expect(params.dictionaryImportsRepository.generateFile).toHaveBeenCalledTimes(1)
+    expect(params.dictionaryImportsRepository.generateFile).toHaveBeenCalledWith('backend-dicionary.json', fakeHttpResponse)
+  })
+
+  test('should call PubSubService.publish once and with correct values', async () => {
+    await sut.execute()
+    expect(params.pubSubService.publish).toHaveBeenCalledTimes(1)
+    expect(params.pubSubService.publish).toHaveBeenCalledWith('dictionary_downloaded', 'backend-dicionary.json')
   })
 })

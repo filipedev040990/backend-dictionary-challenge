@@ -17,12 +17,12 @@ export const expressRouteAdapter = (controller: ControllerInterface) => {
 
     const loggerService = container.resolve('loggerService')
 
-    const obfuscatedBody = obfuscateValue(JSON.parse(JSON.stringify(input.body)))
+    const bodyLog = input.body ? obfuscateValue(JSON.parse(JSON.stringify(input.body))) : null
 
     loggerService.info('Started request', {
       method: req.method,
       route: req.url,
-      input: JSON.stringify(obfuscatedBody),
+      input: bodyLog ? JSON.stringify(bodyLog) : null,
     })
 
     const { statusCode, body } = await controller.execute(input)
