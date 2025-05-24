@@ -13,4 +13,4 @@ app.use('/api/v1', router)
 
 const port = process.env.PORT ?? 3000
 
-app.listen(port, () => loggerService.info(`Bootstraped! Server running at port ${port}`))
+app.listen(port, () => loggerService.info(`Server running at port ${port}`))

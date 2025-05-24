@@ -1,9 +1,9 @@
 services:
-  projeto_base_2025:
+  dictionary-backend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: 'projeto_base_2025'
+    container_name: 'dictionary-backend'
     restart: always
     ports:
       - 3000:3000
@@ -12,6 +12,22 @@ services:
     volumes:
       - ./:/app
     command: bash -c "npm install --legacy-peer-deps && npm run build && npx prisma generate && npx prisma migrate deploy && npm start"
+
+  dictionary-backend-database:
+    image: mysql:latest
+    container_name: dictionary-backend-database
+    restart: always
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-dbname}
+      TZ: 'America/Sao_Paulo'
+    env_file:
+      - .env
+    volumes:
+      - ./data:/var/lib/mysql
 networks:
   default:
     name: local

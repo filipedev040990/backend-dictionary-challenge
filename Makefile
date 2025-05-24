@@ -1,4 +1,4 @@
-SERVICE=projeto_base_2025
+SERVICE=dictionary-backend
 
 up:
 	docker compose up -d
