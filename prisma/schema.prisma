@@ -34,3 +34,12 @@ model Dictionary {
 
   @@map("dictionary")
 }
+
+model DictionaryImports {
+  id        String   @id
+  status    String
+  createdAt DateTime
+  updatedAt DateTime
+
+  @@map("dicrionary_imports")
+}
