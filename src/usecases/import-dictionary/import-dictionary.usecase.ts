@@ -4,7 +4,7 @@ import { LoggerServiceInterface } from '@/domain/services/logger.service.interfa
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { ImportDictionaryUsecaseInterface } from '@/domain/usecases/import-dictionary-usecase.interface'
 import { AppContainer } from '@/infra/container/modules'
-import { DICTIONARY_FILENAME, DICTIONARY_URL } from '@/shared/constants'
+import { DICTIONARY_FILENAME, DICTIONARY_URL, REDIS_CHANNEL_DICTIONARY_DOWNLOADED } from '@/shared/constants'
 import UUIDService from '@/shared/services/uuid.service'
 
 export default class ImportDictionaryUsecase implements ImportDictionaryUsecaseInterface {
@@ -28,7 +28,7 @@ export default class ImportDictionaryUsecase implements ImportDictionaryUsecaseI
     if (alreadytImported) {
       this.loggerService.info('Dictionary already imported')
       return {
-        status: 'already_processed',
+        status: alreadytImported.status,
       }
     }
 
@@ -51,10 +51,9 @@ export default class ImportDictionaryUsecase implements ImportDictionaryUsecaseI
       updatedAt: new Date(),
     })
 
-    const redisChannel = 'dictionary_downloaded'
-    await this.pubSubService.publish(redisChannel, DICTIONARY_FILENAME)
+    await this.pubSubService.publish(REDIS_CHANNEL_DICTIONARY_DOWNLOADED, JSON.stringify({ fileName: DICTIONARY_FILENAME }))
 
-    this.loggerService.info('Publishing messagen on channel', { channel: redisChannel, fileName: DICTIONARY_FILENAME })
+    this.loggerService.info('Publishing messagen on channel', { channel: REDIS_CHANNEL_DICTIONARY_DOWNLOADED })
     this.loggerService.info('Finished dictionary download')
 
     return {

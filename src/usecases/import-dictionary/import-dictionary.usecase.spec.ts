@@ -5,6 +5,7 @@ import { LoggerServiceInterface } from '@/domain/services/logger.service.interfa
 import { DictionaryImportsRepositoryInterface } from '@/domain/repositories/dictionary-imports-repository.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { mock } from 'jest-mock-extended'
+import MockDate from 'mockdate'
 
 const params: any = {
   httpService: mock<HttpServiceInterface>(),
@@ -56,11 +57,19 @@ const fakeHttpResponse = {
 describe('ImportDictionaryUsecase', () => {
   let sut: ImportDictionaryUsecase
 
+  beforeAll(() => {
+    MockDate.set(new Date('2025-01-01'))
+  })
+
   beforeEach(() => {
     sut = new ImportDictionaryUsecase(params)
     jest.spyOn(params.httpService, 'get').mockResolvedValue(fakeHttpResponse)
     jest.spyOn(params.uuidService, 'generate').mockReturnValue('anyId')
     jest.spyOn(params.dictionaryImportsRepository, 'get').mockResolvedValue(null)
+  })
+
+  afterAll(() => {
+    MockDate.reset()
   })
 
   test('should call HttpService.get once and with correct params', async () => {
@@ -83,7 +92,7 @@ describe('ImportDictionaryUsecase', () => {
   test('should return if DictionaryImportsRepository.get returns a record', async () => {
     params.dictionaryImportsRepository.get.mockResolvedValueOnce({ id: 'anyId', status: 'processing', createdAt: new Date() })
     const output = await sut.execute()
-    expect(output).toEqual({ status: 'already_processed' })
+    expect(output).toEqual({ status: 'processing' })
   })
 
   test('should call DictionaryImportsRepository.generateFile', async () => {
@@ -95,7 +104,7 @@ describe('ImportDictionaryUsecase', () => {
   test('should call PubSubService.publish once and with correct values', async () => {
     await sut.execute()
     expect(params.pubSubService.publish).toHaveBeenCalledTimes(1)
-    expect(params.pubSubService.publish).toHaveBeenCalledWith('dictionary_downloaded', 'backend-dicionary.json')
+    expect(params.pubSubService.publish).toHaveBeenCalledWith('dictionary_downloaded', JSON.stringify({ fileName: 'backend-dicionary.json' }))
   })
 
   test('should call DictionaryImportsRepository.save', async () => {
@@ -104,8 +113,8 @@ describe('ImportDictionaryUsecase', () => {
     expect(params.dictionaryImportsRepository.save).toHaveBeenCalledWith({
       id: 'anyId',
       status: 'processing',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date('2025-01-01'),
+      updatedAt: new Date('2025-01-01'),
     })
   })
 

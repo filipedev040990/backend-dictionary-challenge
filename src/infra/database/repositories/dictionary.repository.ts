@@ -2,7 +2,7 @@ import { DictionaryRepositoryData, DictionaryRepositoryInterface } from '@/domai
 import { prismaClient } from '../prisma-client'
 
 export default class DictionaryRepository implements DictionaryRepositoryInterface {
-  async save(data: DictionaryRepositoryData): Promise<void> {
-    await prismaClient.dictionary.create({ data })
+  async createMany(data: DictionaryRepositoryData[]): Promise<void> {
+    await prismaClient.dictionary.createMany({ data })
   }
 }

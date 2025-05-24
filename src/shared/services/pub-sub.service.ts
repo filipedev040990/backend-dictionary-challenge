@@ -1,6 +1,6 @@
 import { LoggerServiceInterface } from '@/domain/services/logger.service.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
-import { AppContainer } from '@/infra/container/modules'
+import LoggerService from './logger.service'
 import Redis from 'ioredis'
 
 export default class PubSubService implements PubSubServiceInterface {
@@ -8,8 +8,8 @@ export default class PubSubService implements PubSubServiceInterface {
   private readonly redisPublisher: Redis
   private readonly loggerService: LoggerServiceInterface
 
-  constructor(params: AppContainer) {
-    this.loggerService = params.loggerService
+  constructor() {
+    this.loggerService = new LoggerService()
 
     this.redisSubscriber = new Redis({
       host: process.env.REDIS_HOST || 'localhost',
