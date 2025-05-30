@@ -2,7 +2,7 @@ import { DictionaryImportsRepositoryInterface } from '@/domain/repositories/dict
 import { DictionaryRepositoryInterface } from '@/domain/repositories/dictionary-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger.service.interface'
 import { UUIDServiceInterface } from '@/domain/services/uuid.service.interface'
-import { SaveDictionaryUsecaseInterface } from '@/domain/usecases/save-dictionary-usecase.interface'
+import { SaveDictionaryUsecaseInterface } from '@/domain/usecases/import-dictionary/save-dictionary-usecase.interface'
 import { AppContainer } from '@/infra/container/modules'
 
 export default class SaveDictionaryUsecase implements SaveDictionaryUsecaseInterface {

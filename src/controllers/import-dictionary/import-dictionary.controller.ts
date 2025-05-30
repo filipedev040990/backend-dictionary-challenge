@@ -1,6 +1,6 @@
 import { ControllerInterface, HttpRequest, HttpResponse } from '@/domain/controller/controller.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger.service.interface'
-import { ImportDictionaryUsecaseInterface } from '@/domain/usecases/import-dictionary-usecase.interface'
+import { ImportDictionaryUsecaseInterface } from '@/domain/usecases/import-dictionary/import-dictionary-usecase.interface'
 import { AppContainer } from '@/infra/container/modules'
 import { handleError } from '@/shared/helpers/error.helper'
 import { success } from '@/shared/helpers/http.helper'
