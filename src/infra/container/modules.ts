@@ -5,7 +5,10 @@ import { LoggerServiceInterface } from '@/domain/services/logger.service.interfa
 import { ImportDictionaryUsecaseInterface } from '@/domain/usecases/import-dictionary/import-dictionary-usecase.interface'
 import { DictionaryImportsRepositoryInterface } from '@/domain/repositories/dictionary-imports-repository.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
+import { UserRepositoryInterface } from '@/domain/repositories/user-repository.interface'
 import { createContainer, asClass } from 'awilix'
+import { HashServiceInterface } from '@/domain/services/hash-service.interface'
+import { TokenServiceInterface } from '@/domain/services/token-service.interface'
 import path from 'path'
 import lodash from 'lodash'
 
@@ -17,6 +20,9 @@ export type AppContainer = {
   importDictionaryUsecase: ImportDictionaryUsecaseInterface
   dictionaryImportsRepository: DictionaryImportsRepositoryInterface
   pubSubService: PubSubServiceInterface
+  userRepository: UserRepositoryInterface
+  hashService: HashServiceInterface
+  tokenService: TokenServiceInterface
 }
 
 const container = createContainer()
