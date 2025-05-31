@@ -6,9 +6,10 @@ import { ImportDictionaryUsecaseInterface } from '@/domain/usecases/import-dicti
 import { DictionaryImportsRepositoryInterface } from '@/domain/repositories/dictionary-imports-repository.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { UserRepositoryInterface } from '@/domain/repositories/user-repository.interface'
-import { createContainer, asClass } from 'awilix'
 import { HashServiceInterface } from '@/domain/services/hash-service.interface'
 import { TokenServiceInterface } from '@/domain/services/token-service.interface'
+import { CreateUserUsecaseInterface } from '@/domain/usecases/users/create-user-usecase.interface'
+import { createContainer, asClass } from 'awilix'
 import path from 'path'
 import lodash from 'lodash'
 
@@ -23,6 +24,7 @@ export type AppContainer = {
   userRepository: UserRepositoryInterface
   hashService: HashServiceInterface
   tokenService: TokenServiceInterface
+  createUserUsecase: CreateUserUsecaseInterface
 }
 
 const container = createContainer()
