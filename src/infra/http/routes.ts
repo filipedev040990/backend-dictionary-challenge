@@ -13,5 +13,6 @@ router.get('/import-dictionary', expressRouteAdapter(container.resolve('importDi
 
 // Users
 router.post('/auth/signup', validateSchema('signUpSchema'), expressRouteAdapter(container.resolve('signUpController')))
+router.post('/auth/signin', validateSchema('signInSchema'), expressRouteAdapter(container.resolve('signInController')))
 
 export { router }
