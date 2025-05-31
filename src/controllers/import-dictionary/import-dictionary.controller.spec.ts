@@ -1,6 +1,6 @@
 import ImportDictionaryController from './import-dictionary.controller'
 import { LoggerServiceInterface } from '@/domain/services/logger.service.interface'
-import { ImportDictionaryUsecaseInterface } from '@/domain/usecases/import-dictionary/import-dictionary-usecase.interface'
+import { ImportDictionaryUsecaseInterface } from '@/domain/usecases/dictionary/import-dictionary-usecase.interface'
 import { mock } from 'jest-mock-extended'
 
 const params: any = {

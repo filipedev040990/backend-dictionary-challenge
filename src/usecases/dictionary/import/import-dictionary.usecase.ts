@@ -2,7 +2,7 @@ import { DictionaryImportsRepositoryInterface } from '@/domain/repositories/dict
 import { HttpServiceInterface } from '@/domain/services/http-servivce.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger.service.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
-import { ImportDictionaryUsecaseInterface } from '@/domain/usecases/import-dictionary/import-dictionary-usecase.interface'
+import { ImportDictionaryUsecaseInterface } from '@/domain/usecases/dictionary/import-dictionary-usecase.interface'
 import { AppContainer } from '@/infra/container/modules'
 import { DICTIONARY_FILENAME, DICTIONARY_URL, REDIS_CHANNEL_DICTIONARY_DOWNLOADED } from '@/shared/constants'
 import UUIDService from '@/shared/services/uuid.service'
