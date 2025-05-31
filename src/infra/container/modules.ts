@@ -10,6 +10,7 @@ import { HashServiceInterface } from '@/domain/services/hash-service.interface'
 import { TokenServiceInterface } from '@/domain/services/token-service.interface'
 import { SignUpUsecaseInterface } from '@/domain/usecases/auth/sign-up-usecase.interface'
 import { TokenRepositoryInterface } from '@/domain/repositories/token-repository.interface'
+import { SignInUsecaseInterface } from '@/domain/usecases/auth/sign-in-usecase.interface'
 import { createContainer, asClass } from 'awilix'
 import path from 'path'
 import lodash from 'lodash'
@@ -27,6 +28,7 @@ export type AppContainer = {
   tokenService: TokenServiceInterface
   signUpUsecase: SignUpUsecaseInterface
   tokenRepository: TokenRepositoryInterface
+  signInUsecase: SignInUsecaseInterface
 }
 
 const container = createContainer()
