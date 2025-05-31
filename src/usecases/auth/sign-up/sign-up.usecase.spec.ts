@@ -47,7 +47,7 @@ describe('SignUpUsecase', () => {
     jest.spyOn(UserEntity, 'build').mockReturnValue(fakeUser)
     jest.spyOn(params.userRepository, 'getByUsername').mockResolvedValue(null)
     jest.spyOn(params.hashService, 'generateHash').mockResolvedValue('$2a$12$T7fSzhfbNONT/7iGdVJee.7gKr0IQnE9qbDEmAprai6GNJEGdeMPS')
-    jest.spyOn(params.tokenService, 'generate').mockReturnValue('anyToken')
+    jest.spyOn(params.tokenService, 'generate').mockResolvedValue('anyToken')
     jest.spyOn(params.uuidService, 'generate').mockReturnValue('anyUUID')
   })
 

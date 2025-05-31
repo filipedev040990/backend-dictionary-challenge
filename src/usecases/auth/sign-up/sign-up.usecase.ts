@@ -9,7 +9,7 @@ import { UUIDServiceInterface } from '@/domain/services/uuid.service.interface'
 import { SignUpUsecaseInterface, SignUpUsecaseOutput } from '@/domain/usecases/auth/sign-up-usecase.interface'
 import { AppContainer } from '@/infra/container/modules'
 import { InvalidParamError } from '@/shared/errors'
-import { obfuscateValue } from '@/shared/helpers/string.helper'
+import { deepClone, obfuscateValue } from '@/shared/helpers/string.helper'
 
 export default class SignUpUsecase implements SignUpUsecaseInterface {
   private readonly hashService: HashServiceInterface
@@ -31,7 +31,7 @@ export default class SignUpUsecase implements SignUpUsecaseInterface {
   async execute(input: BuildUserEntityInput): Promise<SignUpUsecaseOutput> {
     const { name, username, password } = input
 
-    this.loggerService.info('SignUpUsecase<execute> called', { input: obfuscateValue(JSON.parse(JSON.stringify(input))) })
+    this.loggerService.info('SignUpUsecase<execute> called', { input: obfuscateValue(deepClone(input)) })
 
     const user = UserEntity.build({
       name,

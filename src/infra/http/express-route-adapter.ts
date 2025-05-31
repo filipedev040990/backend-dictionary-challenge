@@ -1,5 +1,5 @@
 import { ControllerInterface, HttpRequest } from '@/domain/controller/controller.interface'
-import { obfuscateValue } from '@/shared/helpers/string.helper'
+import { deepClone, obfuscateValue } from '@/shared/helpers/string.helper'
 import { prismaClient } from '../database/prisma-client'
 import { randomUUID } from 'crypto'
 import { Request, Response } from 'express'
@@ -17,7 +17,7 @@ export const expressRouteAdapter = (controller: ControllerInterface) => {
 
     const loggerService = container.resolve('loggerService')
 
-    const bodyLog = input.body ? obfuscateValue(JSON.parse(JSON.stringify(input.body))) : null
+    const bodyLog = input.body ? obfuscateValue(deepClone(input.body)) : null
 
     loggerService.info('Started request', {
       method: req.method,

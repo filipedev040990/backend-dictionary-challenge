@@ -21,3 +21,7 @@ export const isBcryptHash = (value: string): boolean => {
 export const isValidString = (value: string): boolean => {
   return value !== '' && value !== undefined && value !== null
 }
+
+export const deepClone = <T>(obj: T): T => {
+  return structuredClone(obj)
+}
