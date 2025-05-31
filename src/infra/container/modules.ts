@@ -8,7 +8,7 @@ import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interf
 import { UserRepositoryInterface } from '@/domain/repositories/user-repository.interface'
 import { HashServiceInterface } from '@/domain/services/hash-service.interface'
 import { TokenServiceInterface } from '@/domain/services/token-service.interface'
-import { CreateUserUsecaseInterface } from '@/domain/usecases/users/create-user-usecase.interface'
+import { SignUpUsecaseInterface } from '@/domain/usecases/auth/sign-up-usecase.interface'
 import { TokenRepositoryInterface } from '@/domain/repositories/token-repository.interface'
 import { createContainer, asClass } from 'awilix'
 import path from 'path'
@@ -25,7 +25,7 @@ export type AppContainer = {
   userRepository: UserRepositoryInterface
   hashService: HashServiceInterface
   tokenService: TokenServiceInterface
-  createUserUsecase: CreateUserUsecaseInterface
+  signUpUsecase: SignUpUsecaseInterface
   tokenRepository: TokenRepositoryInterface
 }
 

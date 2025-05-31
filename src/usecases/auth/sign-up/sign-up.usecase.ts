@@ -3,18 +3,21 @@ import { BuildUserEntityInput } from '@/domain/entities/user/user.entity.types'
 import { TokenRepositoryInterface } from '@/domain/repositories/token-repository.interface'
 import { UserRepositoryInterface } from '@/domain/repositories/user-repository.interface'
 import { HashServiceInterface } from '@/domain/services/hash-service.interface'
+import { LoggerServiceInterface } from '@/domain/services/logger.service.interface'
 import { TokenServiceInterface } from '@/domain/services/token-service.interface'
 import { UUIDServiceInterface } from '@/domain/services/uuid.service.interface'
-import { CreateUserUsecaseInterface, CreateUserUsecaseOutput } from '@/domain/usecases/users/create-user-usecase.interface'
+import { SignUpUsecaseInterface, SignUpUsecaseOutput } from '@/domain/usecases/auth/sign-up-usecase.interface'
 import { AppContainer } from '@/infra/container/modules'
 import { InvalidParamError } from '@/shared/errors'
+import { obfuscateValue } from '@/shared/helpers/string.helper'
 
-export default class CreateUserUsecase implements CreateUserUsecaseInterface {
+export default class SignUpUsecase implements SignUpUsecaseInterface {
   private readonly hashService: HashServiceInterface
   private readonly userRepository: UserRepositoryInterface
   private readonly tokenService: TokenServiceInterface
   private readonly tokenRepository: TokenRepositoryInterface
   private readonly uuidService: UUIDServiceInterface
+  private readonly loggerService: LoggerServiceInterface
 
   constructor(params: AppContainer) {
     this.hashService = params.hashService
@@ -22,10 +25,13 @@ export default class CreateUserUsecase implements CreateUserUsecaseInterface {
     this.tokenService = params.tokenService
     this.tokenRepository = params.tokenRepository
     this.uuidService = params.uuidService
+    this.loggerService = params.loggerService
   }
 
-  async execute(input: BuildUserEntityInput): Promise<CreateUserUsecaseOutput> {
+  async execute(input: BuildUserEntityInput): Promise<SignUpUsecaseOutput> {
     const { name, username, password } = input
+
+    this.loggerService.info('SignUpUsecase<execute> called', { input: obfuscateValue(JSON.parse(JSON.stringify(input))) })
 
     const user = UserEntity.build({
       name,

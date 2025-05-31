@@ -12,6 +12,6 @@ router.use(requestIdMiddleware)
 router.get('/import-dictionary', expressRouteAdapter(container.resolve('importDictionaryController')))
 
 // Users
-router.post('/auth/signup', validateSchema('createUserSchema'), expressRouteAdapter(container.resolve('createUserController')))
+router.post('/auth/signup', validateSchema('signUpSchema'), expressRouteAdapter(container.resolve('signUpController')))
 
 export { router }

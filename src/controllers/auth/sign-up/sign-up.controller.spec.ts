@@ -1,26 +1,26 @@
 import { HttpRequest } from '@/domain/controller/controller.interface'
-import CreateUserController from './create-user.controller'
-import { CreateUserUsecaseInterface, CreateUserUsecaseOutput } from '@/domain/usecases/users/create-user-usecase.interface'
+import SignUpController from './sign-up.controller'
+import { SignUpUsecaseInterface, SignUpUsecaseOutput } from '@/domain/usecases/auth/sign-up-usecase.interface'
 import { mock } from 'jest-mock-extended'
 import { LoggerServiceInterface } from '@/domain/services/logger.service.interface'
 
 const params: any = {
-  createUserUsecase: mock<CreateUserUsecaseInterface>(),
+  signUpUsecase: mock<SignUpUsecaseInterface>(),
   loggerService: mock<LoggerServiceInterface>(),
 }
 
-const usecaseOutput: CreateUserUsecaseOutput = {
+const usecaseOutput: SignUpUsecaseOutput = {
   id: 'anyId',
   name: 'Zé das Couves',
   token: 'anyToken',
 }
 
-describe('CreateUserController', () => {
-  let sut: CreateUserController
+describe('SignUpController', () => {
+  let sut: SignUpController
   let input: HttpRequest
 
   beforeEach(() => {
-    sut = new CreateUserController(params)
+    sut = new SignUpController(params)
     input = {
       body: {
         name: 'Zé das Couves',
@@ -28,14 +28,14 @@ describe('CreateUserController', () => {
         password: '123456789',
       },
     }
-    jest.spyOn(params.createUserUsecase, 'execute').mockResolvedValue(usecaseOutput)
+    jest.spyOn(params.signUpUsecase, 'execute').mockResolvedValue(usecaseOutput)
   })
 
-  test('should call CreateUserUsecase.execute once and with correct values', async () => {
+  test('should call SignUpUsecase.execute once and with correct values', async () => {
     await sut.execute(input)
 
-    expect(params.createUserUsecase.execute).toHaveBeenCalledTimes(1)
-    expect(params.createUserUsecase.execute).toHaveBeenCalledWith(input.body)
+    expect(params.signUpUsecase.execute).toHaveBeenCalledTimes(1)
+    expect(params.signUpUsecase.execute).toHaveBeenCalledWith(input.body)
   })
 
   test('should return a correct output', async () => {

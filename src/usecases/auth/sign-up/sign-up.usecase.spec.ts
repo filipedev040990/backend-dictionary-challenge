@@ -1,5 +1,5 @@
 import { BuildUserEntityInput } from '@/domain/entities/user/user.entity.types'
-import CreateUserUsecase from './create-user.usecase'
+import SignUpUsecase from './sign-up.usecase'
 import { UserRepositoryInterface } from '@/domain/repositories/user-repository.interface'
 import UserEntity from '@/domain/entities/user/user.entity'
 import { InvalidParamError } from '@/shared/errors'
@@ -7,6 +7,7 @@ import { HashServiceInterface } from '@/domain/services/hash-service.interface'
 import { TokenServiceInterface } from '@/domain/services/token-service.interface'
 import { TokenRepositoryInterface } from '@/domain/repositories/token-repository.interface'
 import { UUIDServiceInterface } from '@/domain/services/uuid.service.interface'
+import { LoggerServiceInterface } from '@/domain/services/logger.service.interface'
 import MockDate from 'mockdate'
 import { mock } from 'jest-mock-extended'
 
@@ -16,6 +17,7 @@ const params: any = {
   tokenService: mock<TokenServiceInterface>(),
   tokenRepository: mock<TokenRepositoryInterface>(),
   uuidService: mock<UUIDServiceInterface>(),
+  loggerService: mock<LoggerServiceInterface>(),
 }
 
 const fakeUser = {
@@ -27,8 +29,8 @@ const fakeUser = {
   updatedAt: new Date(),
 }
 
-describe('CreateUserUsecase', () => {
-  let sut: CreateUserUsecase
+describe('SignUpUsecase', () => {
+  let sut: SignUpUsecase
   let input: BuildUserEntityInput
 
   beforeAll(() => {
@@ -36,7 +38,7 @@ describe('CreateUserUsecase', () => {
   })
 
   beforeEach(() => {
-    sut = new CreateUserUsecase(params)
+    sut = new SignUpUsecase(params)
     input = {
       name: 'Zé das Couves',
       username: 'zedascouves',
