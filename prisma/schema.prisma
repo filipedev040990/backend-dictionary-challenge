@@ -43,3 +43,14 @@ model DictionaryImports {
 
   @@map("dictionary_imports")
 }
+
+model User {
+  id        String   @id
+  name      String
+  username  String   @unique
+  password  String   @db.Text
+  createdAt DateTime
+  updatedAt DateTime
+
+  @@map("users")
+}
