@@ -5,6 +5,8 @@ import UserEntity from '@/domain/entities/user/user.entity'
 import { InvalidParamError } from '@/shared/errors'
 import { HashServiceInterface } from '@/domain/services/hash-service.interface'
 import { TokenServiceInterface } from '@/domain/services/token-service.interface'
+import { TokenRepositoryInterface } from '@/domain/repositories/token-repository.interface'
+import { UUIDServiceInterface } from '@/domain/services/uuid.service.interface'
 import MockDate from 'mockdate'
 import { mock } from 'jest-mock-extended'
 
@@ -12,6 +14,8 @@ const params: any = {
   userRepository: mock<UserRepositoryInterface>(),
   hashService: mock<HashServiceInterface>(),
   tokenService: mock<TokenServiceInterface>(),
+  tokenRepository: mock<TokenRepositoryInterface>(),
+  uuidService: mock<UUIDServiceInterface>(),
 }
 
 const fakeUser = {
@@ -42,6 +46,7 @@ describe('CreateUserUsecase', () => {
     jest.spyOn(params.userRepository, 'getByUsername').mockResolvedValue(null)
     jest.spyOn(params.hashService, 'generateHash').mockResolvedValue('$2a$12$T7fSzhfbNONT/7iGdVJee.7gKr0IQnE9qbDEmAprai6GNJEGdeMPS')
     jest.spyOn(params.tokenService, 'generate').mockReturnValue('anyToken')
+    jest.spyOn(params.uuidService, 'generate').mockReturnValue('anyUUID')
   })
 
   afterAll(() => {
@@ -95,6 +100,17 @@ describe('CreateUserUsecase', () => {
 
     expect(params.tokenService.generate).toHaveBeenCalledTimes(1)
     expect(params.tokenService.generate).toHaveBeenCalledWith({ id: 'anyId', name: 'Zé das Couves', username: 'zedascouves' })
+  })
+
+  test('should call TokenRepository.save once and with correct valus', async () => {
+    await sut.execute(input)
+
+    expect(params.tokenRepository.save).toHaveBeenCalledTimes(1)
+    expect(params.tokenRepository.save).toHaveBeenCalledWith({
+      id: 'anyUUID',
+      token: 'anyToken',
+      createdAt: new Date(),
+    })
   })
 
   test('should return a correct output', async () => {

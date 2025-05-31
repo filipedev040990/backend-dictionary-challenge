@@ -54,3 +54,11 @@ model User {
 
   @@map("users")
 }
+
+model Token {
+  id        String   @id
+  token     String   @db.Text
+  createdAt DateTime
+
+  @@map("tokens")
+}
