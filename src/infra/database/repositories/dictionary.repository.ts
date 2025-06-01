@@ -5,4 +5,14 @@ export default class DictionaryRepository implements DictionaryRepositoryInterfa
   async createMany(data: DictionaryRepositoryData[]): Promise<void> {
     await prismaClient.dictionary.createMany({ data })
   }
+
+  async getWords(): Promise<DictionaryRepositoryData[] | null> {
+    const words = await prismaClient.dictionary.findMany()
+
+    if (!words?.length) {
+      return null
+    }
+
+    return words
+  }
 }
