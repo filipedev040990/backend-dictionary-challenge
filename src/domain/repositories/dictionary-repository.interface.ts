@@ -6,4 +6,5 @@ export type DictionaryRepositoryData = {
 
 export interface DictionaryRepositoryInterface {
   createMany: (input: DictionaryRepositoryData[]) => Promise<void>
+  getWords: () => Promise<DictionaryRepositoryData[] | null>
 }
