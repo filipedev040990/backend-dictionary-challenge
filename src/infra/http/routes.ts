@@ -10,6 +10,7 @@ router.use(requestIdMiddleware)
 
 // Dictionary
 router.get('/import-dictionary', expressRouteAdapter(container.resolve('importDictionaryController')))
+router.get('/entries/:lang', expressRouteAdapter(container.resolve('listWordsController')))
 
 // Users
 router.post('/auth/signup', validateSchema('signUpSchema'), expressRouteAdapter(container.resolve('signUpController')))
