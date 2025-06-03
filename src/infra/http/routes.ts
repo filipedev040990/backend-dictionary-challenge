@@ -3,14 +3,15 @@ import { expressRouteAdapter } from './express-route-adapter'
 import { container } from '../container/modules'
 import { requestIdMiddleware } from '../middlewares/request-id.middleware'
 import { validateSchema } from '../middlewares/schema-validator.middleware'
+import { validateTokenMiddleware } from '../middlewares/validate-token.middleware'
 
 const router = Router()
 
 router.use(requestIdMiddleware)
 
 // Dictionary
-router.get('/import-dictionary', expressRouteAdapter(container.resolve('importDictionaryController')))
-router.get('/entries/:lang', expressRouteAdapter(container.resolve('listWordsController')))
+router.get('/import-dictionary', validateTokenMiddleware, expressRouteAdapter(container.resolve('importDictionaryController')))
+router.get('/entries/:lang', validateTokenMiddleware, expressRouteAdapter(container.resolve('listWordsController')))
 
 // Users
 router.post('/auth/signup', validateSchema('signUpSchema'), expressRouteAdapter(container.resolve('signUpController')))

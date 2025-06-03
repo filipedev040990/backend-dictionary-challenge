@@ -1,5 +1,5 @@
 import { TokenRepositoryInterface } from '@/domain/repositories/token-repository.interface'
-import ValidateTokenUsecase from './validate-token'
+import ValidateTokenUsecase from './validate-token.usecase'
 import { TokenServiceInterface } from '@/domain/services/token-service.interface'
 import { UserRepositoryInterface } from '@/domain/repositories/user-repository.interface'
 import { mock } from 'jest-mock-extended'
