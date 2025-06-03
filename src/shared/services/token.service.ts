@@ -26,7 +26,7 @@ export default class TokenService implements TokenServiceInterface {
       return decodedToken
     } catch (error) {
       this.loggerService.error('Verify token error', { error })
-      throw error
+      return null
     }
   }
 }
