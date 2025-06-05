@@ -1,4 +1,5 @@
 export type ListWordsUsecaseInput = {
+  userId: string
   search: string
   limit: number
   page: number

@@ -26,10 +26,12 @@ export const validateTokenMiddleware = async (req: Request, res: Response, next:
       return
     }
 
-    req.userData = {
-      id: decodedToken.data.id,
-      name: decodedToken.data.name,
-      username: decodedToken.data.username,
+    req.body = {
+      userData: {
+        id: decodedToken.data.id,
+        name: decodedToken.data.name,
+        username: decodedToken.data.username,
+      },
     }
 
     next()

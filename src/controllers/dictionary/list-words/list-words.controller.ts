@@ -17,6 +17,7 @@ export default class ListWordsController implements ControllerInterface {
   async execute(input: HttpRequest): Promise<HttpResponse> {
     try {
       const usecaseInput: ListWordsUsecaseInput = {
+        userId: input?.body?.userData?.id,
         search: input?.query?.search,
         limit: input?.query?.limit,
         page: input?.query?.page,

@@ -30,6 +30,13 @@ describe('ListWordsController', () => {
         limit: 4,
         page: 1,
       },
+      body: {
+        userData: {
+          id: 'anyUserId',
+          name: 'anyName',
+          username: 'anyUsername',
+        },
+      },
     }
     jest.spyOn(params.listWordsUsecase, 'execute').mockResolvedValue(usecaseOutput)
   })
@@ -37,7 +44,10 @@ describe('ListWordsController', () => {
   test('should call listWordsUsecase.execute', async () => {
     await sut.execute(input)
     expect(params.listWordsUsecase.execute).toHaveBeenCalledTimes(1)
-    expect(params.listWordsUsecase.execute).toHaveBeenCalledWith(input.query)
+    expect(params.listWordsUsecase.execute).toHaveBeenCalledWith({
+      userId: input.body.userData.id,
+      ...input.query,
+    })
   })
 
   test('should return a correct output', async () => {

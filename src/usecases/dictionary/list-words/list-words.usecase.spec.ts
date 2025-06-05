@@ -2,11 +2,16 @@ import { DictionaryRepositoryInterface } from '@/domain/repositories/dictionary-
 import ListWordsUsecase from './list-words.usecase'
 import { ListWordsUsecaseInput } from '@/domain/usecases/dictionary/list-words-usecase.interface'
 import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
+import { UserSearchHistoryRepositoryInterface } from '@/domain/repositories/user-search-history-repository.interface'
+import { UUIDServiceInterface } from '@/domain/services/uuid.service.interface'
 import { mock } from 'jest-mock-extended'
+import MockDate from 'mockdate'
 
 const params: any = {
   cacheService: mock<CacheServiceInterface>(),
   dictionaryRepository: mock<DictionaryRepositoryInterface>(),
+  userSearchHistoryRepository: mock<UserSearchHistoryRepositoryInterface>(),
+  uuidService: mock<UUIDServiceInterface>(),
 }
 
 const wordsList = [
@@ -41,15 +46,25 @@ describe('ListWordsUsecase', () => {
   let sut: ListWordsUsecase
   let input: ListWordsUsecaseInput
 
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   beforeEach(() => {
     sut = new ListWordsUsecase(params)
     input = {
+      userId: 'anyUserId',
       search: 'fire',
       limit: 4,
       page: 1,
     }
     jest.spyOn(params.dictionaryRepository, 'getWords').mockResolvedValue(wordsList)
     jest.spyOn(params.cacheService, 'get').mockResolvedValue(null)
+    jest.spyOn(params.uuidService, 'generate').mockReturnValue('anyUUID')
+  })
+
+  afterAll(() => {
+    MockDate.reset()
   })
 
   test('should call CacheService.get once and with correct values', async () => {
@@ -124,5 +139,22 @@ describe('ListWordsUsecase', () => {
       hasNext: true,
       hasPrev: true,
     })
+  })
+
+  test('should call userRepository.saveSearchHistory once and with correct value', async () => {
+    await sut.execute(input)
+    expect(params.userSearchHistoryRepository.save).toHaveBeenCalledTimes(1)
+    expect(params.userSearchHistoryRepository.save).toHaveBeenCalledWith({
+      id: 'anyUUID',
+      userId: 'anyUserId',
+      word: 'fire',
+      addedAt: new Date(),
+    })
+  })
+
+  test('should not call userSearchHistoryRepository.save once and with correct value', async () => {
+    input.search = ''
+    await sut.execute(input)
+    expect(params.userSearchHistoryRepository.save).toHaveBeenCalledTimes(0)
   })
 })

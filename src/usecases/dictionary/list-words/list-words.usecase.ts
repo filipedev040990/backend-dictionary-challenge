@@ -1,15 +1,21 @@
 import { DictionaryRepositoryData, DictionaryRepositoryInterface } from '@/domain/repositories/dictionary-repository.interface'
+import { UserSearchHistoryRepositoryInterface } from '@/domain/repositories/user-search-history-repository.interface'
 import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
+import { UUIDServiceInterface } from '@/domain/services/uuid.service.interface'
 import { ListWordsUsecaseInput, ListWordsUsecaseInterface, ListWordsUsecaseOutput } from '@/domain/usecases/dictionary/list-words-usecase.interface'
 import { AppContainer } from '@/infra/container/modules'
 
 export default class ListWordsUsecase implements ListWordsUsecaseInterface {
   private readonly cacheService: CacheServiceInterface
   private readonly dictionaryRepository: DictionaryRepositoryInterface
+  private readonly userSearchHistoryRepository: UserSearchHistoryRepositoryInterface
+  private readonly uuidService: UUIDServiceInterface
 
   constructor(params: AppContainer) {
     this.dictionaryRepository = params.dictionaryRepository
     this.cacheService = params.cacheService
+    this.userSearchHistoryRepository = params.userSearchHistoryRepository
+    this.uuidService = params.uuidService
   }
 
   async execute(input: ListWordsUsecaseInput): Promise<ListWordsUsecaseOutput> {
@@ -22,6 +28,10 @@ export default class ListWordsUsecase implements ListWordsUsecaseInterface {
     const paginated = this.paginateResults(page, limit, words)
     const totalDocs = words.length
     const totalPages = Math.ceil(totalDocs / limit)
+
+    if (search !== '') {
+      await this.saveUserSearchHistory(input.userId, search)
+    }
 
     return {
       results: paginated,
@@ -63,5 +73,14 @@ export default class ListWordsUsecase implements ListWordsUsecaseInterface {
     const offset = (page - 1) * limit
     const paginated = words.slice(offset, offset + limit)
     return paginated.map((r) => r.word)
+  }
+
+  async saveUserSearchHistory(userId: string, word: string): Promise<void> {
+    await this.userSearchHistoryRepository.save({
+      id: this.uuidService.generate(),
+      userId,
+      word,
+      addedAt: new Date(),
+    })
   }
 }
