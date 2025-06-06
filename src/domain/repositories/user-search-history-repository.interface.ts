@@ -7,5 +7,5 @@ export type UserSearchHistoryRepositoryData = {
 
 export interface UserSearchHistoryRepositoryInterface {
   save: (input: UserSearchHistoryRepositoryData) => Promise<void>
-  getByUserId: (useId: string) => Promise<UserSearchHistoryRepositoryData[]>
+  getByUserId: (userId: string) => Promise<UserSearchHistoryRepositoryData[]>
 }

@@ -1,5 +1,5 @@
 import { UserSearchHistoryRepositoryData, UserSearchHistoryRepositoryInterface } from '@/domain/repositories/user-search-history-repository.interface'
-import ListUserSearchHistoryUsecase from './list-user-search-history'
+import ListUserSearchHistoryUsecase from './list-user-search-history.usecase'
 import { MissingParamError } from '@/shared/errors'
 import { ListUserSearchHistoryUsecaseInput } from '@/domain/usecases/dictionary/list-user-search-history-usecase.interface'
 import { mock } from 'jest-mock-extended'

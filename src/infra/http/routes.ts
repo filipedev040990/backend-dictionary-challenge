@@ -12,6 +12,7 @@ router.use(requestIdMiddleware)
 // Dictionary
 router.get('/import-dictionary', validateTokenMiddleware, expressRouteAdapter(container.resolve('importDictionaryController')))
 router.get('/entries/:lang', validateTokenMiddleware, expressRouteAdapter(container.resolve('listWordsController')))
+router.get('/user/me/history', validateTokenMiddleware, expressRouteAdapter(container.resolve('listUserSearchHistoryController')))
 
 // Users
 router.post('/auth/signup', validateSchema('signUpSchema'), expressRouteAdapter(container.resolve('signUpController')))
