@@ -7,8 +7,8 @@ Nessa etapa você deverá construir uma API Restful com as melhores práticas de
 **Obrigatório 1** - Você deverá atender aos seguintes casos de uso:
 
 - Como usuário, devo ser capaz de realizar login com usuário e senha - ok
-- Como usuário, devo ser capaz de visualizar a lista de palavras do dicionário -ok
-- Como usuário, devo ser capaz de guardar no histórico palavras já visualizadas
+- Como usuário, devo ser capaz de visualizar a lista de palavras do dicionário - ok
+- Como usuário, devo ser capaz de guardar no histórico palavras já visualizadas - ok
 - Como usuário, devo ser capaz de visualizar o histórico de palavras já visualizadas
 - Como usuário, deve ser capaz de guardar uma palavra como favorita
 - Como usuário, deve ser capaz de apagar uma palavra favorita
