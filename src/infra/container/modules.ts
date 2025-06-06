@@ -14,6 +14,7 @@ import { SignInUsecaseInterface } from '@/domain/usecases/auth/sign-in-usecase.i
 import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { ListWordsUsecaseInterface } from '@/domain/usecases/dictionary/list-words-usecase.interface'
 import { UserSearchHistoryRepositoryInterface } from '@/domain/repositories/user-search-history-repository.interface'
+import { ListUserSearchHistoryUsecaseInterface } from '@/domain/usecases/dictionary/list-user-search-history-usecase.interface'
 import { createContainer, asClass } from 'awilix'
 import path from 'path'
 import lodash from 'lodash'
@@ -35,6 +36,7 @@ export type AppContainer = {
   cacheService: CacheServiceInterface
   listWordsUsecase: ListWordsUsecaseInterface
   userSearchHistoryRepository: UserSearchHistoryRepositoryInterface
+  listUserSearchHistoryUsecase: ListUserSearchHistoryUsecaseInterface
 }
 
 const container = createContainer()
