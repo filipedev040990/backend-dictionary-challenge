@@ -14,6 +14,7 @@ router.get('/import-dictionary', validateTokenMiddleware, expressRouteAdapter(co
 router.get('/entries/:lang', validateTokenMiddleware, expressRouteAdapter(container.resolve('listWordsController')))
 router.get('/user/me/history', validateTokenMiddleware, expressRouteAdapter(container.resolve('listUserSearchHistoryController')))
 router.post('/entries/:lang/:word/favorite', validateTokenMiddleware, expressRouteAdapter(container.resolve('saveUserFavoriteWordController')))
+router.post('/entries/:lang/:word/unfavorite', validateTokenMiddleware, expressRouteAdapter(container.resolve('deleteUserFavoriteWordController')))
 
 // Users
 router.post('/auth/signup', validateSchema('signUpSchema'), expressRouteAdapter(container.resolve('signUpController')))

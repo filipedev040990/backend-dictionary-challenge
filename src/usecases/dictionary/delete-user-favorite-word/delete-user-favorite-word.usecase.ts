@@ -31,7 +31,7 @@ export default class DeleteUserFavoriteWordUsecase implements DeleteUserFavorite
         return
       }
 
-      await this.repository.delete(userId, word)
+      await this.repository.delete(wordExists.id)
     } catch (error) {
       this.loggerService.error('Failed to delete favorite word', { error })
       throw error

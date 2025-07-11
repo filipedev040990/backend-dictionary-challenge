@@ -8,5 +8,5 @@ export type UserFavoritesWordRepositoryData = {
 export interface UserFavoritesWordsRepositoryInterface {
   save: (input: UserFavoritesWordRepositoryData) => Promise<void>
   getWordByUserId: (userId: string, word: string) => Promise<UserFavoritesWordRepositoryData | null>
-  delete: (userId: string, word: string) => Promise<void>
+  delete: (id: string) => Promise<void>
 }

@@ -10,4 +10,8 @@ export default class UserFavoritesWordsRepository implements UserFavoritesWordsR
     const wordExists = await prismaClient.userFavoritesWords.findFirst({ where: { userId, word } })
     return wordExists ?? null
   }
+
+  async delete(id: string): Promise<void> {
+    await prismaClient.userFavoritesWords.delete({ where: { id } })
+  }
 }

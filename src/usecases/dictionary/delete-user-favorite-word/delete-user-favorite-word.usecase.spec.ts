@@ -49,7 +49,7 @@ describe('DeleteUserFavoriteWordUsecase', () => {
   test('should delete favorite word', async () => {
     await sut.execute(input)
     expect(params.userFavoritesWordsRepository.delete).toHaveBeenCalledTimes(1)
-    expect(params.userFavoritesWordsRepository.delete).toHaveBeenCalledWith(input.userId, input.word)
+    expect(params.userFavoritesWordsRepository.delete).toHaveBeenCalledWith('anyId')
   })
 
   test('should not call UserFavoritesWordsRepository.delete if no found word', async () => {
