@@ -10,7 +10,7 @@ Nessa etapa você deverá construir uma API Restful com as melhores práticas de
 - Como usuário, devo ser capaz de visualizar a lista de palavras do dicionário - ok
 - Como usuário, devo ser capaz de guardar no histórico palavras já visualizadas - ok
 - Como usuário, devo ser capaz de visualizar o histórico de palavras já visualizadas - ok
-- Como usuário, deve ser capaz de guardar uma palavra como favorita
+- Como usuário, deve ser capaz de guardar uma palavra como favorita - ok
 - Como usuário, deve ser capaz de apagar uma palavra favorita
 - Internamente, a API deve fazer proxy da Words API, pois assim o front irá acessar somente a sua API
 

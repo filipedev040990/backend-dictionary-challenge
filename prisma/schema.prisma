@@ -45,13 +45,14 @@ model DictionaryImports {
 }
 
 model User {
-  id                String              @id
-  name              String
-  username          String              @unique
-  password          String              @db.Text
-  createdAt         DateTime
-  updatedAt         DateTime
-  UserSearchHistory UserSearchHistory[]
+  id                 String               @id
+  name               String
+  username           String               @unique
+  password           String               @db.Text
+  createdAt          DateTime
+  updatedAt          DateTime
+  UserSearchHistory  UserSearchHistory[]
+  UserFavoritesWords UserFavoritesWords[]
 
   @@map("users")
 }
@@ -72,4 +73,14 @@ model UserSearchHistory {
   addedAt DateTime
 
   @@map("user_search_history")
+}
+
+model UserFavoritesWords {
+  id        String   @id
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  word      String
+  createdAt DateTime
+
+  @@map("user_favorites_words")
 }

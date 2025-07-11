@@ -11,15 +11,16 @@ export default class SaveUserFavoriteWordController implements ControllerInterfa
 
   constructor(params: AppContainer) {
     this.loggerService = params.loggerService
-    this.saveUserFavoriteWordUsecase = params.saveUserFavoritesWordUsecase
+    this.saveUserFavoriteWordUsecase = params.saveUserFavoriteWordUsecase
   }
 
   async execute(input: HttpRequest): Promise<HttpResponse> {
     try {
       const usecaseInput: SaveUserFavoriteWordUsecaseInput = {
         userId: input?.body?.userData?.id,
-        word: input?.body?.word,
+        word: input?.params?.word,
       }
+
       await this.saveUserFavoriteWordUsecase.execute(usecaseInput)
       return success(201, null)
     } catch (error) {

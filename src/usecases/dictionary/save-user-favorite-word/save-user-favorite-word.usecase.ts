@@ -11,7 +11,7 @@ export default class SaveUserFavoriteWordUsecase implements SaveUserFavoriteWord
   private readonly loggerService: LoggerServiceInterface
 
   constructor(params: AppContainer) {
-    this.repository = params.userFavoritesWordRepository
+    this.repository = params.userFavoritesWordsRepository
     this.uuidService = params.uuidService
     this.loggerService = params.loggerService
   }

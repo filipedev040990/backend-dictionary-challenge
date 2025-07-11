@@ -6,7 +6,7 @@ import { mock } from 'jest-mock-extended'
 
 const params: any = {
   loggerService: mock<LoggerServiceInterface>(),
-  saveUserFavoritesWordUsecase: mock<SaveUserFavoriteWordUsecaseInterface>(),
+  saveUserFavoriteWordUsecase: mock<SaveUserFavoriteWordUsecaseInterface>(),
 }
 
 describe('SaveUserFavoriteWordController', () => {
@@ -22,15 +22,17 @@ describe('SaveUserFavoriteWordController', () => {
           name: 'anyName',
           username: 'anyUsername',
         },
-        word: 'anyWord',
+        query: {
+          word: 'anyWord',
+        },
       },
     }
   })
 
-  test('should call saveUserFavoritesWordUsecase.execute', async () => {
+  test('should call saveUserFavoriteWordUsecase.execute', async () => {
     await sut.execute(input)
-    expect(params.saveUserFavoritesWordUsecase.execute).toHaveBeenCalledTimes(1)
-    expect(params.saveUserFavoritesWordUsecase.execute).toHaveBeenCalledWith({
+    expect(params.saveUserFavoriteWordUsecase.execute).toHaveBeenCalledTimes(1)
+    expect(params.saveUserFavoriteWordUsecase.execute).toHaveBeenCalledWith({
       userId: input.body.userData.id,
       word: input.body.word,
     })

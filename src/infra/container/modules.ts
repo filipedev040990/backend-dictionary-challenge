@@ -39,8 +39,8 @@ export type AppContainer = {
   listWordsUsecase: ListWordsUsecaseInterface
   userSearchHistoryRepository: UserSearchHistoryRepositoryInterface
   listUserSearchHistoryUsecase: ListUserSearchHistoryUsecaseInterface
-  userFavoritesWordRepository: UserFavoritesWordsRepositoryInterface
-  saveUserFavoritesWordUsecase: SaveUserFavoriteWordUsecaseInterface
+  userFavoritesWordsRepository: UserFavoritesWordsRepositoryInterface
+  saveUserFavoriteWordUsecase: SaveUserFavoriteWordUsecaseInterface
 }
 
 const container = createContainer()

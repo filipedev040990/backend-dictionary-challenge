@@ -1,5 +1,5 @@
 import { MissingParamError } from '@/shared/errors'
-import SaveUserFavoriteWordUsecase from './save-user-favorite-word.usecase.'
+import SaveUserFavoriteWordUsecase from './save-user-favorite-word.usecase'
 import { UserFavoritesWordsRepositoryInterface } from '@/domain/repositories/user-favorites-words-repository.interface'
 import { UUIDServiceInterface } from '@/domain/services/uuid.service.interface'
 import { SaveUserFavoriteWordUsecaseInput } from '@/domain/usecases/dictionary/save-user-favorite-word-usecase.interface'
@@ -8,7 +8,7 @@ import { mock } from 'jest-mock-extended'
 import MockDate from 'mockdate'
 
 const params: any = {
-  userFavoritesWordRepository: mock<UserFavoritesWordsRepositoryInterface>(),
+  userFavoritesWordsRepository: mock<UserFavoritesWordsRepositoryInterface>(),
   uuidService: mock<UUIDServiceInterface>(),
   loggerService: mock<LoggerServiceInterface>(),
 }
@@ -49,8 +49,8 @@ describe('SaveUserFavoriteWordUsecase', () => {
   test('should save favorite word', async () => {
     await sut.execute(input)
     expect(params.uuidService.generate).toHaveBeenCalledTimes(1)
-    expect(params.userFavoritesWordRepository.save).toHaveBeenCalledTimes(1)
-    expect(params.userFavoritesWordRepository.save).toHaveBeenCalledWith({
+    expect(params.userFavoritesWordsRepository.save).toHaveBeenCalledTimes(1)
+    expect(params.userFavoritesWordsRepository.save).toHaveBeenCalledWith({
       id: 'anyUUID',
       userId: 'anyUserId',
       word: 'any',
@@ -60,7 +60,7 @@ describe('SaveUserFavoriteWordUsecase', () => {
 
   test('should throw and log if save favorite word error', async () => {
     const error = new Error('Database fails')
-    jest.spyOn(params.userFavoritesWordRepository, 'save').mockImplementationOnce(() => {
+    jest.spyOn(params.userFavoritesWordsRepository, 'save').mockImplementationOnce(() => {
       throw error
     })
 
