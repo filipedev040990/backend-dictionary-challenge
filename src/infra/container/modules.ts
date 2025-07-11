@@ -17,6 +17,7 @@ import { UserSearchHistoryRepositoryInterface } from '@/domain/repositories/user
 import { ListUserSearchHistoryUsecaseInterface } from '@/domain/usecases/dictionary/list-user-search-history-usecase.interface'
 import { UserFavoritesWordsRepositoryInterface } from '@/domain/repositories/user-favorites-words-repository.interface'
 import { SaveUserFavoriteWordUsecaseInterface } from '@/domain/usecases/dictionary/save-user-favorite-word-usecase.interface'
+import { DeleteUserFavoriteWordUsecaseInterface } from '@/domain/usecases/dictionary/delete-user-favorite-word-usecase.interface'
 import { createContainer, asClass } from 'awilix'
 import path from 'path'
 import lodash from 'lodash'
@@ -41,6 +42,7 @@ export type AppContainer = {
   listUserSearchHistoryUsecase: ListUserSearchHistoryUsecaseInterface
   userFavoritesWordsRepository: UserFavoritesWordsRepositoryInterface
   saveUserFavoriteWordUsecase: SaveUserFavoriteWordUsecaseInterface
+  deleteUserFavoriteWordUsecase: DeleteUserFavoriteWordUsecaseInterface
 }
 
 const container = createContainer()
