@@ -1,5 +1,5 @@
 {
-  "name": "employee-service",
+  "name": "backend-dictionary-challenge",
   "version": "1.0.0",
   "description": "Employee microsservice",
   "main": "main.js",
