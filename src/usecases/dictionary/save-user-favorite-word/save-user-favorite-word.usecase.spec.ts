@@ -28,6 +28,7 @@ describe('SaveUserFavoriteWordUsecase', () => {
       word: 'any',
     }
     jest.spyOn(params.uuidService, 'generate').mockReturnValue('anyUUID')
+    jest.spyOn(params.userFavoritesWordsRepository, 'getWordByUserId').mockResolvedValue(null)
   })
 
   afterAll(() => {
@@ -67,5 +68,24 @@ describe('SaveUserFavoriteWordUsecase', () => {
     const promise = sut.execute(input)
     await expect(promise).rejects.toThrow(error)
     expect(params.loggerService.error).toHaveBeenCalledWith('Failed to save favorite word', { error })
+  })
+
+  test('should call UserFavoritesWordsRepository.getWordByUserId once and with correct values', async () => {
+    await sut.execute(input)
+    expect(params.userFavoritesWordsRepository.getWordByUserId).toHaveBeenCalledTimes(1)
+    expect(params.userFavoritesWordsRepository.getWordByUserId).toHaveBeenCalledWith(input.userId, input.word)
+  })
+
+  test('should not call UserFavoritesWordsRepository.save if word already saving', async () => {
+    jest.spyOn(params.userFavoritesWordsRepository, 'getWordByUserId').mockResolvedValueOnce({
+      id: 'anyId',
+      userId: input.userId,
+      word: input.word,
+      createdAt: new Date('2025-01-01'),
+    })
+
+    await sut.execute(input)
+
+    expect(params.userFavoritesWordsRepository.save).toHaveBeenCalledTimes(0)
   })
 })

@@ -5,4 +5,9 @@ export default class UserFavoritesWordsRepository implements UserFavoritesWordsR
   async save(data: UserFavoritesWordRepositoryData): Promise<void> {
     await prismaClient.userFavoritesWords.create({ data })
   }
+
+  async getWordByUserId(userId: string, word: string): Promise<UserFavoritesWordRepositoryData | null> {
+    const wordExists = await prismaClient.userFavoritesWords.findFirst({ where: { userId, word } })
+    return wordExists ?? null
+  }
 }

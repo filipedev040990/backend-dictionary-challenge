@@ -26,6 +26,12 @@ export default class SaveUserFavoriteWordUsecase implements SaveUserFavoriteWord
         throw new MissingParamError('userId')
       }
 
+      const wordExists = await this.repository.getWordByUserId(input.userId, input.word)
+
+      if (wordExists) {
+        return
+      }
+
       await this.repository.save({
         id: this.uuidService.generate(),
         userId: input.userId,
