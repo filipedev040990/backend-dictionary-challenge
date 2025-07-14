@@ -26,7 +26,7 @@ export default class SaveDictionaryUsecase implements SaveDictionaryUsecaseInter
     this.loggerService.info('Starting dictionary save flow', { totalWords, chunkSize, totalChunks })
 
     try {
-      const chunks = this.chunkArray(words, 1000)
+      const chunks = this.chunkArray(words, chunkSize)
 
       for (let i = 0; i < chunks.length; i++) {
         const chunk = chunks[i]

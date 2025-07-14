@@ -22,21 +22,29 @@ export default class ValidateTokenUsecase implements ValidateTokenUsecaseInterfa
   }
 
   async execute(token: string): Promise<ValidateTokenUsecaseOutput> {
-    const unauthorized = () => ({ valid: false, data: null })
+    const unauthorized = async (tokenId?: string) => {
+      if (tokenId) {
+        await this.tokenRepository.delete(tokenId)
+      }
+
+      return { valid: false, data: null }
+    }
 
     const tokenExists = await this.tokenRepository.get(token)
     if (!tokenExists) {
       return unauthorized()
     }
 
+    const tokenId = tokenExists.id
+
     const decodedTokenData = await this.tokenService.verify<DecodedTokenData>(token)
     if (!decodedTokenData) {
-      return unauthorized()
+      return unauthorized(tokenId)
     }
 
     const userExists = await this.userRepository.getByUsername(decodedTokenData.username)
     if (!userExists) {
-      return unauthorized()
+      return unauthorized(tokenId)
     }
 
     return {

@@ -90,4 +90,18 @@ describe('ValidateTokenUsecase', () => {
       },
     })
   })
+
+  test('should call tokenService.delete if token is invalid', async () => {
+    jest.spyOn(params.tokenService, 'verify').mockResolvedValueOnce(null)
+    await sut.execute(token)
+    expect(params.tokenRepository.delete).toHaveBeenCalledTimes(1)
+    expect(params.tokenRepository.delete).toHaveBeenCalledWith('anyTokenId')
+  })
+
+  test('should call tokenRepository.delete if token no found user', async () => {
+    jest.spyOn(params.userRepository, 'getByUsername').mockResolvedValueOnce(null)
+    await sut.execute(token)
+    expect(params.tokenRepository.delete).toHaveBeenCalledTimes(1)
+    expect(params.tokenRepository.delete).toHaveBeenCalledWith('anyTokenId')
+  })
 })
