@@ -16,6 +16,7 @@ datasource db {
 model Request {
   id        String   @id
   requestId String
+  userId    String?
   method    String
   route     String
   input     String   @db.Text

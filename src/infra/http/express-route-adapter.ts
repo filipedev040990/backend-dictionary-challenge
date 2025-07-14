@@ -45,6 +45,7 @@ const logRequest = async (req: Request, input: any, statusCode: number, output: 
       id: randomUUID(),
       method: req.method,
       requestId: getRequestId(),
+      userId: req?.body?.userData?.id ?? undefined,
       input: input.body ? JSON.stringify(input.body) : '',
       route: req.url,
       createdAt: new Date(),
