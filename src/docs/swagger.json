@@ -1,0 +1,541 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Dictionary API",
+    "version": "1.0.0",
+    "description": "API RESTful para um dicionário de palavras, com autenticação, histórico e favoritos"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor local"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/auth/signup": {
+      "post": {
+        "summary": "Cadastrar novo usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["name", "username", "password"],
+                "example": {
+                  "name": "Zé das Couves",
+                  "username": "zedascouves",
+                  "password": "123456789"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "token": { "type": "string" }
+                  },
+                  "example": {
+                    "id": "38838a4f-e49c-4151-a949-600d09e5a546",
+                    "name": "Zé das Couves",
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM4ODM4YTRmLWU0OWMtNDE1MS1hOTQ5LTYwMGQwOWU1YTU0NiIsIm5hbWUiOiJaw6kgZGFzIENvdXZlcyIsInVzZXJuYW1lIjoiemVkYXNjb3V2ZXMiLCJpYXQiOjE3NTI1MTM4NzksImV4cCI6MTc1MjUxNzQ3OX0.qFvz5rP8CR8XV6mTLs5q2oL2PJ9y69Q0czIaufW2mQU"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro na requisição",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" },
+                    "message": { "type": "string" }
+                  },
+                  "example": {
+                    "error": "InvalidParamError",
+                    "message": "Invalid param: This username is already in use"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/signin": {
+      "post": {
+        "summary": "Login do usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["username", "password"],
+                "example": {
+                  "username": "zedascouves",
+                  "password": "123456789"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login bem-sucedido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "token": { "type": "string" }
+                  },
+                  "example": {
+                    "id": "f48bfb26-7b9d-4a42-ad71-6ccea06a0186",
+                    "name": "Zé das Couves",
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY0OGJmYjI2LTdiOWQtNGE0Mi1hZDcxLTZjY2VhMDZhMDE4NiIsIm5hbWUiOiJGaWxpcGUgU2lxdWVpcmEiLCJ1c2VybmFtZSI6ImZpbGlwZS5zaXF1ZWlyYSIsImlhdCI6MTc1MjUxNDEwMiwiZXhwIjoxNzUyNTE3NzAyfQ.DEod8LKwDJ0-VMGN-wMcZ8VdQrHZnsUWeeKBuOAsP2s"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" },
+                    "message": { "type": "string" }
+                  },
+                  "example": {
+                    "error": "MissingParamError",
+                    "message": "Missing param: username"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" },
+                    "message": { "type": "string" }
+                  },
+                  "example": {
+                    "error": "UnauthorizedError",
+                    "message": "Unauthorized"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/import-dictionary": {
+      "get": {
+        "summary": "Importar dicionário de palavras",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Importação em processamento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" }
+                  },
+                  "example": {
+                    "error": "processing"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" },
+                    "message": { "type": "string" }
+                  },
+                  "example": {
+                    "error": "UnauthorizedError",
+                    "message": "JWT token is missing or invalid"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/entries/{lang}": {
+      "get": {
+        "summary": "Listar palavras por linguagem",
+        "description": "Retorna uma lista de palavras da linguagem especificada. É possível buscar por termo e paginar os resultados.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "path",
+            "required": true,
+            "description": "Código da linguagem (ex: en, pt, es)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "en"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Termo de busca",
+            "schema": {
+              "type": "string"
+            },
+            "example": "history"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Limite de resultados por página",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "example": 10
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Número da página",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de palavras encontrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "page": { "type": "integer" },
+                    "totalDocs": { "type": "integer" },
+                    "totalPages": { "type": "integer" },
+                    "hasNext": { "type": "boolean" },
+                    "hasPrev": { "type": "boolean" }
+                  },
+                  "example": {
+                    "results": [
+                      "psychohistory",
+                      "underhistory",
+                      "unhistory",
+                      "prehistory",
+                      "protohistory",
+                      "polyhistory",
+                      "ethnohistory",
+                      "history"
+                    ],
+                    "page": 1,
+                    "totalDocs": 8,
+                    "totalPages": 1,
+                    "hasNext": false,
+                    "hasPrev": false
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" },
+                    "message": { "type": "string" }
+                  },
+                  "example": {
+                    "error": "UnauthorizedError",
+                    "message": "JWT token is missing or invalid"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/me/history": {
+      "get": {
+        "summary": "Histórico de palavras acessadas pelo usuário",
+        "description": "Retorna o histórico de palavras buscadas pelo usuário autenticado.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Número de itens por página",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "example": 10
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Número da página",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Histórico retornado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "word": { "type": "string" },
+                          "added": { "type": "string", "format": "date-time" }
+                        }
+                      }
+                    },
+                    "page": { "type": "integer" },
+                    "totalDocs": { "type": "integer" },
+                    "totalPages": { "type": "integer" },
+                    "hasNext": { "type": "boolean" },
+                    "hasPrev": { "type": "boolean" }
+                  },
+                  "example": {
+                    "results": [
+                      { "word": "blue", "added": "2025-07-14T17:56:31.013Z" },
+                      { "word": "history", "added": "2025-07-14T17:49:09.543Z" },
+                      { "word": "history", "added": "2025-07-11T15:01:42.723Z" },
+                      { "word": "history", "added": "2025-07-11T15:00:25.216Z" }
+                    ],
+                    "page": 1,
+                    "totalDocs": 4,
+                    "totalPages": 1,
+                    "hasNext": false,
+                    "hasPrev": false
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" },
+                    "message": { "type": "string" }
+                  },
+                  "example": {
+                    "error": "UnauthorizedError",
+                    "message": "JWT token is missing or invalid"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/entries/{lang}/{word}/favorite": {
+      "post": {
+        "summary": "Marcar palavra como favorita",
+        "description": "Marca uma palavra como favorita para o usuário autenticado, na linguagem especificada.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "path",
+            "required": true,
+            "description": "Código da linguagem (ex: en, pt, es)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "en"
+          },
+          {
+            "name": "word",
+            "in": "path",
+            "required": true,
+            "description": "Palavra a ser marcada como favorita",
+            "schema": {
+              "type": "string"
+            },
+            "example": "history"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Palavra marcada como favorita com sucesso (sem conteúdo)"
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" },
+                    "message": { "type": "string" }
+                  },
+                  "example": {
+                    "error": "UnauthorizedError",
+                    "message": "JWT token is missing or invalid"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/entries/{lang}/{word}/unfavorite": {
+      "post": {
+        "summary": "Desmarcar palavra como favorita",
+        "description": "Desmarca uma palavra como favorita para o usuário autenticado, na linguagem especificada.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "path",
+            "required": true,
+            "description": "Código da linguagem (ex: en, pt, es)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "en"
+          },
+          {
+            "name": "word",
+            "in": "path",
+            "required": true,
+            "description": "Palavra a ser desmarcada como favorita",
+            "schema": {
+              "type": "string"
+            },
+            "example": "history"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Palavra desmarcada como favorita com sucesso (sem conteúdo)"
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" },
+                    "message": { "type": "string" }
+                  },
+                  "example": {
+                    "error": "UnauthorizedError",
+                    "message": "JWT token is missing or invalid"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

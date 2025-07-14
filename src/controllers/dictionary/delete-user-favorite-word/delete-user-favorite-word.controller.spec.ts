@@ -40,6 +40,6 @@ describe('DeleteUserFavoriteWordController', () => {
 
   test('should return a correct output', async () => {
     const output = await sut.execute(input)
-    expect(output).toEqual({ statusCode: 200, body: null })
+    expect(output).toEqual({ statusCode: 204, body: null })
   })
 })

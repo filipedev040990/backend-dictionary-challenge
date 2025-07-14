@@ -22,7 +22,7 @@ export default class SaveUserFavoriteWordController implements ControllerInterfa
       }
 
       await this.saveUserFavoriteWordUsecase.execute(usecaseInput)
-      return success(201, null)
+      return success(204, null)
     } catch (error) {
       const formattedError = handleError(error)
       this.loggerService.error('Save user favorite word error', { error: formattedError })

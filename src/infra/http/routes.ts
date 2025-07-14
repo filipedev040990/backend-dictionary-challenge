@@ -8,6 +8,9 @@ import { validateTokenMiddleware } from '../middlewares/validate-token.middlewar
 const router = Router()
 
 router.use(requestIdMiddleware)
+// Users
+router.post('/auth/signup', validateSchema('signUpSchema'), expressRouteAdapter(container.resolve('signUpController')))
+router.post('/auth/signin', validateSchema('signInSchema'), expressRouteAdapter(container.resolve('signInController')))
 
 // Dictionary
 router.get('/import-dictionary', validateTokenMiddleware, expressRouteAdapter(container.resolve('importDictionaryController')))
@@ -15,9 +18,5 @@ router.get('/entries/:lang', validateTokenMiddleware, expressRouteAdapter(contai
 router.get('/user/me/history', validateTokenMiddleware, expressRouteAdapter(container.resolve('listUserSearchHistoryController')))
 router.post('/entries/:lang/:word/favorite', validateTokenMiddleware, expressRouteAdapter(container.resolve('saveUserFavoriteWordController')))
 router.post('/entries/:lang/:word/unfavorite', validateTokenMiddleware, expressRouteAdapter(container.resolve('deleteUserFavoriteWordController')))
-
-// Users
-router.post('/auth/signup', validateSchema('signUpSchema'), expressRouteAdapter(container.resolve('signUpController')))
-router.post('/auth/signin', validateSchema('signInSchema'), expressRouteAdapter(container.resolve('signInController')))
 
 export { router }

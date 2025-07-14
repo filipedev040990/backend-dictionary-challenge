@@ -22,7 +22,7 @@ export default class DeleteUserFavoriteWordController implements ControllerInter
       }
 
       await this.deleteUserFavoriteWordUsecase.execute(usecaseInput)
-      return success(200, null)
+      return success(204, null)
     } catch (error) {
       const formattedError = handleError(error)
       this.loggerService.error('Delete user favorite word error', { error: formattedError })
